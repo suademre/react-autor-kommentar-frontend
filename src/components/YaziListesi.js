@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 
 export default function YaziListesi(props) {
 
+    console.log(props);
     const[yazilistesi,setYazilistesi] = useState([]);
 
     useEffect(()=>{
