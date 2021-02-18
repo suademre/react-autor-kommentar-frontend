@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import YaziYorumlari from './YaziYorumlari';
 import { api } from "../api";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import SilModal from './SilModal';
 
 
 
@@ -44,22 +46,6 @@ export default function YaziDetayi(props) {
         }).catch(error=>{
             console.log(error);
         })
-
-        {/*
-        axios.get(`https://react-yazi-yorum.herokuapp.com/posts/${id}`)
-        .then(response=>{
-            setYaziDetayi(response.data);
-        })
-        .catch(error=>{
-            console.log(error)
-        });
-
-        axios.get(`https://react-yazi-yorum.herokuapp.com/posts/${id}/comments`)
-        .then(response=>{
-            console.log(response);
-            setYorumlar(response.data);
-        });
-        */}
         
     }, []);
 
@@ -69,17 +55,14 @@ export default function YaziDetayi(props) {
         <React.Fragment>
             <h2 className="ui header">{yaziDetayi.title}</h2>
             <p>{yaziDetayi.created_at}</p>
+            <div className="ui buttons">
+                <Link to={`/posts/${id}/edit`} className="ui positive button">Update</Link>
+                <div className="or"></div>
+                {/* <button className="ui red button">Delete</button> */}
+                <SilModal yazi={yaziDetayi} push={props.history.push}/>
+            </div>
             <p>{yaziDetayi.content}</p>
             <YaziYorumlari yorumlar={yorumlar} handleSubmit={handleCommentSubmit} />
-            {/* 
-                Yorumlar basligi 
-                Yorumlar Listesi 
-                Yorum Yazma Formu
-            */}
-            
-                {/*
-                program ilk calistiginda handleCommentSubmit i gondermemek icin fonsiyon icine aliyoruz.
-                */}
               
         </React.Fragment>
     );

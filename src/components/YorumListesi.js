@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 export default function YorumListesi(props) {
     return (
         <React.Fragment>

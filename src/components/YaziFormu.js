@@ -1,12 +1,12 @@
 import { api } from "../api";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
 
     const YaziFormu = (props)=> {
         console.log("Yazi Formu", props);
 
-    const[yazi,setYazi] = useState({title :"",content :""});
+    const[yazi,setYazi] = useState({title: "",content: ""});
     const [hata,setHata] = useState("")
 
     const onInputChange = (event)=>{
@@ -16,20 +16,38 @@ import {withRouter} from 'react-router-dom';
     const onFormSubmit = (event) => {
         event.preventDefault();
         setHata("");
-        api()
-        .post('/posts',yazi)
-        .then(response=>{
-            props.history.push("/");
-        }).catch(error=>{
-            setHata("Baslik ve yazi icerigi alanlari zorunludur.")
-        });
+
+        if(props.yazi.title){
+            //edit islemi
+            api()
+            .put(`/posts/${props.match.params.id}`,yazi)
+            .then(response=>{
+                console.log(response);
+                props.history.push(`/posts/${props.match.params.id}`);
+            }).catch(error=>{
+                setHata("Baslik ve yazi icerigi alanlari zorunludur.")
+            });
+        }else {
+            //add islemi
+            api()
+            .post("/posts",yazi)
+            .then((response)=>{
+                props.history.push("/");
+            }).catch((error)=>{
+                setHata("Baslik ve yazi icerigi alanlari zorunludur.");
+            });
+        }
     };
+
+    useEffect(()=>{
+        if(props.yazi.title && props.yazi.content) setYazi(props.yazi)
+    },[props.yazi])
 
     return (
         <React.Fragment>
         {hata &&
-        (<div class="ui error message">
-            <div class="header">Hata</div>
+        (<div className="ui error message">
+            <div className="header">Hata</div>
             <p>{hata}</p>
         </div>)
         }
