@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import axios from 'axios';
+import { api } from "../api";
 import {Link} from "react-router-dom";
 
 export default function YaziListesi(props) {
@@ -8,7 +8,8 @@ export default function YaziListesi(props) {
     const[yazilistesi,setYazilistesi] = useState([]);
 
     useEffect(()=>{
-        axios.get("https://react-yazi-yorum.herokuapp.com/posts")
+        api()
+        .get("/posts")
         .then((response)=>{
         setYazilistesi(response.data);
         });
@@ -26,6 +27,7 @@ export default function YaziListesi(props) {
             </div>);
             })
         )}
+        <Link to="/yaziekle">Yazi Ekle</Link>
     </div>
     )
 }

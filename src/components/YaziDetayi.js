@@ -1,6 +1,8 @@
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react'
 import YaziYorumlari from './YaziYorumlari';
+import { api } from "../api";
+import axios from 'axios';
 
 
 
@@ -17,7 +19,8 @@ export default function YaziDetayi(props) {
 
     const handleCommentSubmit = (event,yorum) => {
         event.preventDefault();
-        axios.post(`https://react-yazi-yorum.herokuapp.com/posts/${id}/comments`, yorum)
+        api()
+        .post(`/posts/${id}/comments`, yorum)
         .then(response=>{
             setYorumlar([...yorumlar, response.data]);
             
@@ -29,10 +32,10 @@ export default function YaziDetayi(props) {
     
 
     useEffect(()=>{
-
-        axios.all([
-            axios.get(`https://react-yazi-yorum.herokuapp.com/posts/${id}`),
-            axios.get(`https://react-yazi-yorum.herokuapp.com/posts/${id}/comments`)
+        axios
+        .all([
+            api().get(`/posts/${id}`),
+            api().get(`/posts/${id}/comments`)
         ])
         .then(response=>{
             
